@@ -2,9 +2,11 @@
 :root {
     --text-main: #333333;
     --text-muted: #666666;
-    --glass-bg: rgba(255, 255, 255, 0.4);
-    --glass-border: rgba(255, 255, 255, 0.5);
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    
+    /* 大幅降低卡片底色的不透明度，让光晕更容易透过来，增加悬浮融入感 */
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    /* 取消沉重的外黑阴影。加入较大范围的内发光（inset）来模拟边缘的厚度与毛糙折射感 */
+    --glass-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.03), inset 0 0 30px rgba(255, 255, 255, 0.35);
     
     /* 默认渐变基底 (清晨浪漫色调) */
     --bg-grad-1: #e0c3fc;
@@ -43,10 +45,12 @@ body.theme-nature {
     --badge-bg: rgba(76, 175, 80, 0.15); --badge-color: #2e7d32;
 }
 
-/* 静心与内观 (暗调星空/深邃邃紫) */
+/* 静心与内观 (暗调星空/深邃紫) */
 body.theme-zen {
     --bg-grad-1: #2a2a72; --bg-grad-2: #009ffd;
-    --glass-bg: rgba(20, 20, 35, 0.5); --text-main: #f0f0f0; --text-muted: #bcbcbc;
+    --glass-bg: rgba(15, 15, 25, 0.15); /* 适配深色微光 */
+    --glass-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.2), inset 0 0 30px rgba(255, 255, 255, 0.06);
+    --text-main: #f0f0f0; --text-muted: #bcbcbc;
     --blob-1-col: rgba(72, 61, 139, 0.6); --blob-2-col: rgba(138, 43, 226, 0.4); --blob-3-col: rgba(40, 40, 80, 0.8);
     --badge-bg: rgba(255, 255, 255, 0.15); --badge-color: #dde1e5;
 }
@@ -84,7 +88,7 @@ body.theme-spark {
 }
 
 .blob {
-    position: absolute; filter: blur(80px); z-index: -1;
+    position: absolute; filter: blur(80px); z-index: -2;
     animation: float 20s infinite alternate ease-in-out;
     transition: background 1.5s ease;
 }
@@ -99,63 +103,87 @@ body.theme-spark {
 }
 
 /* 毛玻璃中心卡片 */
-.container { width: 90%; max-width: 400px; display: flex; flex-direction: column; align-items: center; z-index: 1; }
+.container { width: 90%; max-width: 440px; display: flex; flex-direction: column; align-items: center; z-index: 1; }
 
 .glass-card {
     width: 100%;
+    /* 核心视觉改造：提升透明度、加大模糊、采用高光高切角，去掉沉重生硬的实线边框 */
     background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    
     box-shadow: var(--glass-shadow);
-    border-radius: 24px;
-    padding: 40px 30px; display: flex; flex-direction: column; align-items: center;
-    transition: transform 0.3s ease, background 1.5s ease;
+    border-radius: 36px;
+    padding: 50px 30px; display: flex; flex-direction: column; align-items: center;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 1.5s ease, box-shadow 1.5s ease;
 }
 
-.glass-card:hover { transform: translateY(-5px); }
+/* 移除强烈的位移，改为微倾斜呼吸，更有轻盈悬浮感 */
+.glass-card:hover { transform: translateY(-3px) scale(1.005); }
 
-h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; color: var(--text-main); text-align: center; transition: color 1.5s ease;}
-.subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 30px; text-align: center; transition: color 1.5s ease;}
+h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; color: var(--text-main); text-align: center; transition: color 1.5s ease; letter-spacing: 1px;}
+.subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 45px; text-align: center; transition: color 1.5s ease; font-weight: 300;}
 
 .result-area { width: 100%; min-height: 80px; display: flex; justify-content: center; align-items: center; margin-bottom: 5px; text-align: center;}
 
 #result {
-    font-size: 20px; font-weight: 500; line-height: 1.5; padding: 10px 15px; border-radius: 12px;
+    font-size: 22px; font-weight: 500; line-height: 1.5; padding: 10px 15px; border-radius: 12px;
     transition: opacity 0.3s ease, transform 0.3s ease; color: var(--text-main);
+    letter-spacing: 1px;
 }
-.result-placeholder { font-size: 16px; color: #888; font-weight: 400; }
+.result-placeholder { font-size: 16px; color: var(--text-muted); font-weight: 300; opacity: 0.8;}
 
 /* 类别小标签 */
 .badge {
-    font-size: 12px; font-weight: 700; padding: 4px 14px; border-radius: 20px;
+    font-size: 13px; font-weight: 700; padding: 6px 18px; border-radius: 20px;
     background: var(--badge-bg); color: var(--badge-color);
-    margin-bottom: 25px; display: inline-block;
+    margin-bottom: 35px; display: inline-block;
     transition: opacity 0.5s ease, transform 0.5s ease, background 1.5s, color 1.5s;
+    backdrop-filter: blur(10px);
 }
 .hidden { opacity: 0; transform: scale(0.8); pointer-events: none; }
 
 /* 文本滚动与弹跳动效 */
-.animating { animation: rapidScroll 0.1s infinite; opacity: 0.7; filter: blur(1px); }
-.reveal { animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+.animating { animation: rapidScroll 0.1s infinite; opacity: 0.6; filter: blur(2px); }
+.reveal { animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 @keyframes rapidScroll { 0% { transform: translateY(-5px); } 50% { transform: translateY(5px); } 100% { transform: translateY(-5px); } }
-@keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes popIn { 0% { transform: scale(0.8) translateY(10px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
 
-/* 悬浮呼吸按钮 */
+/* 悬浮呼吸按钮：也改为高级玻璃态与卡片呼应 */
 .draw-btn {
-    background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.9);
-    padding: 14px 32px; font-size: 16px; font-weight: 500; border-radius: 30px;
-    color: #333; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease; font-family: inherit; outline: none; position: relative; overflow: hidden;
+    background: rgba(255, 255, 255, 0.25); 
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-left: 1px solid rgba(255, 255, 255, 0.4);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 15px 45px; font-size: 16px; font-weight: 500; border-radius: 40px;
+    color: var(--text-main); cursor: pointer; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    transition: all 0.4s ease; font-family: inherit; outline: none; position: relative; overflow: hidden;
 }
+
 .draw-btn::before {
     content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.8), transparent);
-    transform: translateX(-100%); transition: transform 0.5s;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: translateX(-100%); transition: transform 0.6s ease;
 }
-.draw-btn:hover { background: rgba(255, 255, 255, 0.9); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); transform: translateY(-2px); }
+.draw-btn:hover { 
+    background: rgba(255, 255, 255, 0.45); 
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06); 
+    transform: translateY(-2px) scale(1.02); 
+}
 .draw-btn:hover::before { transform: translateX(100%); }
-.draw-btn:active { transform: translateY(1px); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); }
-.draw-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.draw-btn:active { transform: translateY(1px) scale(0.98); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); }
+.draw-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; filter: grayscale(100%); }
 
-.mini-tips { margin-top: 30px; font-size: 13px; color: var(--text-muted); letter-spacing: 1px; transition: color 1.5s ease;}
+/* 针对深色模式的按钮调整 */
+body.theme-zen .draw-btn { background: rgba(255, 255, 255, 0.1); border-top: 1px solid rgba(255, 255, 255, 0.2); }
+body.theme-zen .draw-btn:hover { background: rgba(255, 255, 255, 0.18); }
+
+.mini-tips { margin-top: 35px; font-size: 13px; color: var(--text-muted); letter-spacing: 1px; transition: color 1.5s ease; opacity: 0.7;}
