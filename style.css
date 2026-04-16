@@ -1,0 +1,161 @@
+/* 全局设定与现代化排版 */
+:root {
+    --text-main: #333333;
+    --text-muted: #666666;
+    --glass-bg: rgba(255, 255, 255, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    
+    /* 默认渐变基底 (清晨浪漫色调) */
+    --bg-grad-1: #e0c3fc;
+    --bg-grad-2: #8ec5fc;
+    --blob-1-col: rgba(255, 175, 189, 0.8);
+    --blob-2-col: rgba(161, 196, 253, 0.8);
+    --blob-3-col: rgba(253, 203, 241, 0.8);
+    
+    /* 标签颜色基底 */
+    --badge-bg: rgba(0,0,0,0.06);
+    --badge-color: #555;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* 平滑过渡的根样式 */
+body {
+    font-family: 'Noto Sans SC', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fef9f9;
+    color: var(--text-main);
+    overflow: hidden;
+    position: relative;
+    user-select: none;
+    transition: all 1.5s ease-in-out;
+}
+
+/* ======== 分类主题定义区 ======== */
+/* 自然与户外 (绿色/清新) */
+body.theme-nature {
+    --bg-grad-1: #e0f8d1; --bg-grad-2: #a8e6cf;
+    --blob-1-col: rgba(212, 252, 121, 0.6); --blob-2-col: rgba(150, 230, 161, 0.6); --blob-3-col: rgba(255, 211, 182, 0.6);
+    --badge-bg: rgba(76, 175, 80, 0.15); --badge-color: #2e7d32;
+}
+
+/* 静心与内观 (暗调星空/深邃邃紫) */
+body.theme-zen {
+    --bg-grad-1: #2a2a72; --bg-grad-2: #009ffd;
+    --glass-bg: rgba(20, 20, 35, 0.5); --text-main: #f0f0f0; --text-muted: #bcbcbc;
+    --blob-1-col: rgba(72, 61, 139, 0.6); --blob-2-col: rgba(138, 43, 226, 0.4); --blob-3-col: rgba(40, 40, 80, 0.8);
+    --badge-bg: rgba(255, 255, 255, 0.15); --badge-color: #dde1e5;
+}
+
+/* 日常与小确幸 (夕阳/暖黄色) */
+body.theme-cozy {
+    --bg-grad-1: #fee140; --bg-grad-2: #fa709a;
+    --blob-1-col: rgba(255, 154, 158, 0.8); --blob-2-col: rgba(254, 207, 239, 0.8); --blob-3-col: rgba(253, 203, 241, 0.8);
+    --badge-bg: rgba(245, 124, 0, 0.15); --badge-color: #e65100;
+}
+
+/* 灵感与连接 (幻彩霓虹) */
+body.theme-spark {
+    --bg-grad-1: #fbc2eb; --bg-grad-2: #a6c1ee;
+    --blob-1-col: rgba(255, 154, 158, 0.6); --blob-2-col: rgba(166, 193, 238, 0.6); --blob-3-col: rgba(204, 161, 243, 0.6);
+    --badge-bg: rgba(156, 39, 176, 0.15); --badge-color: #6a1b9a;
+}
+
+/* ================================= */
+
+/* 画布特效层 */
+#effect-canvas {
+    position: absolute;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* 流动光圈斑块 */
+.background {
+    position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: -3; overflow: hidden;
+    background: linear-gradient(120deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+    transition: background 1.5s ease;
+}
+
+.blob {
+    position: absolute; filter: blur(80px); z-index: -1;
+    animation: float 20s infinite alternate ease-in-out;
+    transition: background 1.5s ease;
+}
+
+.blob-1 { width: 400px; height: 400px; background: var(--blob-1-col); top: -10%; left: -10%; border-radius: 50%; }
+.blob-2 { width: 500px; height: 500px; background: var(--blob-2-col); bottom: -20%; right: -10%; border-radius: 40%; animation-delay: -5s; }
+.blob-3 { width: 300px; height: 300px; background: var(--blob-3-col); top: 40%; left: 40%; border-radius: 60%; animation-delay: -10s; }
+
+@keyframes float {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(50px, 50px) rotate(10deg); }
+}
+
+/* 毛玻璃中心卡片 */
+.container { width: 90%; max-width: 400px; display: flex; flex-direction: column; align-items: center; z-index: 1; }
+
+.glass-card {
+    width: 100%;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 24px;
+    padding: 40px 30px; display: flex; flex-direction: column; align-items: center;
+    transition: transform 0.3s ease, background 1.5s ease;
+}
+
+.glass-card:hover { transform: translateY(-5px); }
+
+h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; color: var(--text-main); text-align: center; transition: color 1.5s ease;}
+.subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 30px; text-align: center; transition: color 1.5s ease;}
+
+.result-area { width: 100%; min-height: 80px; display: flex; justify-content: center; align-items: center; margin-bottom: 5px; text-align: center;}
+
+#result {
+    font-size: 20px; font-weight: 500; line-height: 1.5; padding: 10px 15px; border-radius: 12px;
+    transition: opacity 0.3s ease, transform 0.3s ease; color: var(--text-main);
+}
+.result-placeholder { font-size: 16px; color: #888; font-weight: 400; }
+
+/* 类别小标签 */
+.badge {
+    font-size: 12px; font-weight: 700; padding: 4px 14px; border-radius: 20px;
+    background: var(--badge-bg); color: var(--badge-color);
+    margin-bottom: 25px; display: inline-block;
+    transition: opacity 0.5s ease, transform 0.5s ease, background 1.5s, color 1.5s;
+}
+.hidden { opacity: 0; transform: scale(0.8); pointer-events: none; }
+
+/* 文本滚动与弹跳动效 */
+.animating { animation: rapidScroll 0.1s infinite; opacity: 0.7; filter: blur(1px); }
+.reveal { animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+@keyframes rapidScroll { 0% { transform: translateY(-5px); } 50% { transform: translateY(5px); } 100% { transform: translateY(-5px); } }
+@keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* 悬浮呼吸按钮 */
+.draw-btn {
+    background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.9);
+    padding: 14px 32px; font-size: 16px; font-weight: 500; border-radius: 30px;
+    color: #333; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease; font-family: inherit; outline: none; position: relative; overflow: hidden;
+}
+.draw-btn::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.8), transparent);
+    transform: translateX(-100%); transition: transform 0.5s;
+}
+.draw-btn:hover { background: rgba(255, 255, 255, 0.9); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); transform: translateY(-2px); }
+.draw-btn:hover::before { transform: translateX(100%); }
+.draw-btn:active { transform: translateY(1px); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); }
+.draw-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.mini-tips { margin-top: 30px; font-size: 13px; color: var(--text-muted); letter-spacing: 1px; transition: color 1.5s ease;}

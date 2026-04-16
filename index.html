@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空闲时间做什么？</title>
+    <!-- 引入外部字体，增加现代感 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-default">
+    <!-- 动态粒子画布底层 -->
+    <canvas id="effect-canvas"></canvas>
+
+    <!-- 流动颜色层 -->
+    <div class="background">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    
+    <div class="container">
+        <div class="glass-card">
+            <h1>空闲时间做什么？</h1>
+            <p class="subtitle">给自己一点治愈的时光</p>
+            
+            <div class="result-area">
+                <div id="result" class="result-placeholder">点击下方按钮，抽取今日建议</div>
+            </div>
+
+            <!-- 用于显示这是哪个类别的徽章（初始隐藏） -->
+            <div id="category-badge" class="badge hidden"></div>
+            
+            <button id="draw-btn" class="draw-btn">开始抽签</button>
+        </div>
+        
+        <div class="mini-tips">
+            <p>“允许休息，也是一件正经事。”</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
