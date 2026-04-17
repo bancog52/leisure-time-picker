@@ -75,34 +75,34 @@ class Particle {
             // 清新绿叶/碎阳光飘落
             this.x = Math.random() * width;
             this.y = Math.random() * -height;
-            this.size = Math.random() * 4 + 2;
-            this.speedY = Math.random() * 1 + 0.5; // 下落
-            this.speedX = Math.random() * 1 - 0.5;
-            this.color = `rgba(${Math.floor(180+Math.random()*40)}, ${Math.floor(230+Math.random()*25)}, ${Math.floor(180+Math.random()*40)}, ${Math.random()*0.5 + 0.2})`; 
+            this.size = Math.random() * 6 + 4; // 增大
+            this.speedY = Math.random() * 1.5 + 1; // 加快下落
+            this.speedX = Math.random() * 1.5 - 0.75;
+            this.color = `rgba(${Math.floor(180+Math.random()*40)}, ${Math.floor(230+Math.random()*25)}, ${Math.floor(180+Math.random()*40)}, ${Math.random()*0.5 + 0.4})`; // 提高可见度
         } else if (this.category === 'zen') {
             // 静谧海底/深空 缓慢发光上浮的星尘
             this.x = Math.random() * width;
             this.y = height + Math.random() * height;
-            this.size = Math.random() * 3 + 1;
-            this.speedY = -(Math.random() * 0.4 + 0.1); // 上浮
-            this.speedX = Math.sin(Math.random() * Math.PI) * 0.2;
+            this.size = Math.random() * 4 + 3; // 增大星尘尺寸，避免太小像针尖
+            this.speedY = -(Math.random() * 1 + 0.5); // 提高上浮速度
+            this.speedX = Math.sin(Math.random() * Math.PI) * 0.4;
             this.life = Math.random() * 100; // 作为正弦波计算参数，处理呼吸明暗
             this.color = `rgba(255, 255, 255,`; 
         } else if (this.category === 'cozy') {
             // 治愈光球晕开
             this.x = Math.random() * width;
             this.y = Math.random() * height;
-            this.size = Math.random() * 40 + 10;
-            this.speedY = Math.random() * 0.3 - 0.15;
-            this.speedX = Math.random() * 0.3 - 0.15;
-            this.color = `rgba(255, ${Math.floor(200+Math.random()*50)}, ${Math.floor(150+Math.random()*50)}, 0.08)`; 
+            this.size = Math.random() * 100 + 40; // 光球尺寸显著变大，增加包裹感
+            this.speedY = Math.random() * 0.6 - 0.3; 
+            this.speedX = Math.random() * 0.6 - 0.3;
+            this.color = `rgba(255, ${Math.floor(200+Math.random()*50)}, ${Math.floor(150+Math.random()*50)}, 0.18)`; // 提高初始透明度，让光晕更明显
         } else if (this.category === 'spark') {
             // 跟随鼠标的奇缘星迹
             this.x = mouseX + (Math.random() * 60 - 30);
             this.y = mouseY + (Math.random() * 60 - 30);
-            this.size = Math.random() * 2.5 + 1;
-            this.speedY = Math.random() * 2 - 1;
-            this.speedX = Math.random() * 2 - 1;
+            this.size = Math.random() * 5 + 2; // 星迹尺寸变大
+            this.speedY = Math.random() * 3 - 1.5; // 让散开动画更灵动一些
+            this.speedX = Math.random() * 3 - 1.5;
             this.life = 1; // 寿命控制（用于透明度衰减）
             this.color = `hsla(${Math.floor(Math.random()*60 + 260)}, 100%, 80%, `; // 梦幻粉紫
         }
@@ -129,7 +129,7 @@ class Particle {
             // 如果鼠标突然移走，用旧的xy散开后消散
             this.x += this.speedX;
             this.y += this.speedY;
-            this.life -= 0.015; 
+            this.life -= 0.008; // 减缓生命消散速度，让星迹拖尾更长更明显
             if (this.life <= 0) this.reset(); // 重生到鼠标当前位置附近
         }
     }
@@ -138,7 +138,8 @@ class Particle {
         ctx.beginPath();
         // 特殊的透明度计算与涂色
         if (this.category === 'zen') {
-            const alpha = Math.abs(Math.sin(this.life)) * 0.6; // 实现明暗呼吸
+            // 提高深空星尘的最低透明度，避免一开始完全看不见，最大透明度也提高
+            const alpha = 0.3 + Math.abs(Math.sin(this.life)) * 0.7; // 实现明暗呼吸
             ctx.fillStyle = `${this.color}${alpha})`;
         } else if (this.category === 'spark') {
             ctx.fillStyle = `${this.color}${this.life})`;
@@ -156,11 +157,11 @@ function initScene() {
     particles = [];
     let particleCount = 0;
     
-    // 决定各种类别的不同粒子渲染数量
-    if (currentCategory === 'nature') particleCount = 45; 
-    else if (currentCategory === 'zen') particleCount = 80;
-    else if (currentCategory === 'cozy') particleCount = 20;
-    else if (currentCategory === 'spark') particleCount = 100;
+    // 决定各种类别的不同粒子渲染数量，提高总粒子数加强氛围感
+    if (currentCategory === 'nature') particleCount = 70; 
+    else if (currentCategory === 'zen') particleCount = 120;
+    else if (currentCategory === 'cozy') particleCount = 35;
+    else if (currentCategory === 'spark') particleCount = 160;
     
     for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle(currentCategory));
